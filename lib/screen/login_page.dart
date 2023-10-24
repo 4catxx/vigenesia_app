@@ -4,6 +4,7 @@ import 'register_page.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'dashboard_page.dart';
+import 'home_page.dart';
 
 // Inisialisasi GlobalKey untuk FormBuilder
 final _formKey = GlobalKey<FormBuilderState>();
@@ -124,7 +125,9 @@ class _LoginState extends State<Login> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (BuildContext context) =>
-                                              Dashboard()),
+                                              MyHomePage(
+                                                title: 'Home Page',
+                                              )),
                                     );
                                   }
                                 },
