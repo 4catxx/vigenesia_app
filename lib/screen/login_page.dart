@@ -27,7 +27,6 @@ class _LoginState extends State<Login> {
     'First App';
     return Scaffold(
       appBar: AppBar(
-        //leading: Icon(Icons.home),
         backgroundColor: Colors.brown,
         title: Text('Login'),
       ),
@@ -39,6 +38,8 @@ class _LoginState extends State<Login> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Image.asset('images/4207.jpg',
+                        height: 300.0), // Gambar di atas tulisan "Login"
                     Text(
                       'Login',
                       style:
