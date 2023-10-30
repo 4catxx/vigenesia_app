@@ -28,6 +28,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         //leading: Icon(Icons.home),
+        backgroundColor: Colors.brown,
         title: Text('Login'),
       ),
       body: SingleChildScrollView(
@@ -95,7 +96,7 @@ class _LoginState extends State<Login> {
                               Text.rich(
                                 TextSpan(children: [
                                   TextSpan(
-                                    text: 'Dont Have Account ? ',
+                                    text: 'Tidak ada akun ? ',
                                     style: TextStyle(color: Colors.black54),
                                   ),
                                   TextSpan(
