@@ -38,6 +38,7 @@ dependencies:
   form_validator: ^2.1.1
   form_builder_validators: ^8.6.1
   another_flushbar: ^1.12.30
+  http: ^0.13.6
 
 dev_dependencies:
   flutter_test:
