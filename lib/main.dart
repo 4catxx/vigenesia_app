@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'screen/home_page.dart';
 import 'screen/login_page.dart';
+import 'screen/menu_page.dart';
 
 void main() => runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Login(),
+      home: Menu(),
     ));
 
 class MyApp extends StatelessWidget {
