@@ -1,31 +1,55 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'login_page.dart';
 import 'register_page.dart';
-import 'motivasi_page.dart';
+import 'menu_page.dart';
 
-class Menu extends StatelessWidget {
+class HalamanMotivasi extends StatefulWidget {
+  @override
+  _HalamanMotivasiState createState() => _HalamanMotivasiState();
+}
+
+class _HalamanMotivasiState extends State<HalamanMotivasi> {
+  List<String> motivasiList = ['Loading...'];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMotivasi();
+  }
+
+  fetchMotivasi() async {
+    final response =
+        await http.get(Uri.parse('http://localhost/vigenesia/api/Motivasi'));
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse is List && jsonResponse.isNotEmpty) {
+        setState(() {
+          motivasiList =
+              jsonResponse.map<String>((item) => item['isi_motivasi']).toList();
+        });
+      } else {
+        throw Exception('Failed to load motivasi');
+      }
+    } else {
+      throw Exception('Failed to load motivasi');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Menu'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset('images/4207.png', height: 200.0),
-            SizedBox(height: 20),
-            Text(
-              'Selamat Datang!',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-          ],
-        ),
+      body: ListView.builder(
+        itemCount: motivasiList.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(motivasiList[index]),
+          );
+        },
       ),
       drawer: Drawer(
         child: ListView(
