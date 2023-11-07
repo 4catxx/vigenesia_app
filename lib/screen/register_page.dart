@@ -5,6 +5,8 @@ import 'login_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/gestures.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -60,9 +62,9 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF4CAF50),
+      backgroundColor: Colors.white,
       body: Container(
-        color: Color(0xFF4CAF50), // Warna latar belakang hijau
+        color: Colors.white, // Warna latar belakang hijau
         child: SingleChildScrollView(
           child: SafeArea(
             child: Center(
@@ -76,7 +78,7 @@ class _RegisterState extends State<Register> {
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     SizedBox(height: 20),
@@ -118,6 +120,10 @@ class _RegisterState extends State<Register> {
                               fillColor:
                                   Colors.white, // Warna latar belakang putih
                             ),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(),
+                              FormBuilderValidators.email(),
+                            ]),
                           ),
                           SizedBox(height: 20),
                           FormBuilderTextField(
