@@ -1,16 +1,9 @@
 # vigenesia_app
 
-A new Flutter project.
+Pembuatan aplikasi mobile menggunakan flutter dart dengan API.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Clone https://github.com/4catxx/vigenesia
+2. Simpan di local, jika menggunakan xampp jangan lupa nyalakan xampp nya
+3. import database
