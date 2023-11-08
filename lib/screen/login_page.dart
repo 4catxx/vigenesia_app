@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'register_page.dart';
 import 'menu_page.dart';
 import 'dashboard_page.dart';
+import 'dart:async';
 
 final _formKey = GlobalKey<FormBuilderState>();
 bool _obscureText = true;
@@ -21,7 +22,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  bool _isLoading = false; // Tambahkan variabel ini
+  bool _isLoading = false;
 
   Future<String> loginUser(String email, String password) async {
     setState(() {
@@ -29,36 +30,45 @@ class _LoginState extends State<Login> {
     });
 
     final apiUrl = Uri.parse('http://127.0.0.1:80/vigenesia/api/login');
-    final response = await http.post(
-      apiUrl,
-      body: {'email': email, 'password': password},
-    );
 
-    final responseData = json.decode(response.body);
+    try {
+      final response = await http.post(
+        apiUrl,
+        body: {'email': email, 'password': password},
+      ).timeout(const Duration(seconds: 10)); // Timeout ke permintaan HTTP
 
-    setState(() {
-      _isLoading = false; // Sembunyikan loading indicator
-    });
+      final responseData = json.decode(response.body);
 
-    if (response.statusCode == 200) {
-      return responseData['is_active'] ? "success" : 'Gagal.';
-    } else if (response.statusCode == 400) {
-      if (responseData == "Ada kesalahan di email / password.") {
-        return 'Login gagal. Email atau password salah.';
-      } else if (responseData == "Belum mengisi email dan password.") {
-        return 'Email dan password harus diisi.';
+      if (response.statusCode == 200) {
+        return responseData['is_active'] ? "success" : 'Gagal.';
+      } else if (response.statusCode == 400) {
+        if (responseData == "Ada kesalahan di email / password.") {
+          return 'Login gagal. Email atau password salah.';
+        } else if (responseData == "Belum mengisi email dan password.") {
+          return 'Email dan password harus diisi.';
+        } else {
+          return 'Terjadi kesalahan.';
+        }
       } else {
-        return 'Terjadi kesalahan.';
+        return 'Terjadi kesalahan saat menghubungi server.';
       }
-    } else {
+    } on TimeoutException catch (e) {
       return 'Terjadi kesalahan saat menghubungi server.';
+    } catch (error) {
+      return 'Terjadi kesalahan saat menghubungi server.';
+    } finally {
+      setState(() {
+        _isLoading = false; // Sembunyikan loading indicator
+      });
     }
+
+    return 'Terjadi kesalahan.';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Warna latar belakang hijau
+      backgroundColor: Colors.white, // Warna latar belakang
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -73,14 +83,14 @@ class _LoginState extends State<Login> {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black, // Warna teks putih
+                      color: Colors.black, // Warna teks
                     ),
                   ),
                   Text(
                     'Silakan masuk untuk melanjutkan',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.black, // Warna teks putih
+                      color: Colors.black, // Warna teks
                     ),
                   ),
                   SizedBox(height: 20),
@@ -170,8 +180,7 @@ class _LoginState extends State<Login> {
                               ),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  primary:
-                                      Color(0xFF2196F3), // Warna tombol biru
+                                  primary: Color(0xFF2196F3), // Warna tombol
                                   textStyle: TextStyle(
                                     color: Colors.white,
                                   ),
@@ -220,8 +229,7 @@ class _LoginState extends State<Login> {
           ),
           if (_isLoading)
             Container(
-              color: Colors.black
-                  .withOpacity(0.5), // Tambahkan lapisan hitam transparan
+              color: Colors.black.withOpacity(0.5), // Lapisan hitam transparan
               child: Center(
                 child: CircularProgressIndicator(),
               ),
