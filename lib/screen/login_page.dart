@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'register_page.dart';
 import 'menu_page.dart';
-import 'dashboard_page.dart';
+import 'login/dashboard_page.dart';
 import 'dart:async';
 
 final _formKey = GlobalKey<FormBuilderState>();

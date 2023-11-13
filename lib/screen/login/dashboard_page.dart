@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'login_page.dart';
-import 'motivasi_page.dart';
+import '../login_page.dart';
+import '../motivasi_page.dart';
 import 'package:http/http.dart' as http;
+import 'motivasi_login.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -95,12 +96,11 @@ class Dashboard extends StatelessWidget {
                 ),
                 ListTile(
                   title: Text('Daftar Motivasi'),
-                  onTap: () async {
-                    var url =
-                        Uri.parse('http://localhost/vigenesia/api/Motivasi');
-                    var response = await http.get(url);
-                    print('Response status: ${response.statusCode}');
-                    print('Response body: ${response.body}');
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => DaftarMotivasi()),
+                    );
                   },
                 ),
               ],
