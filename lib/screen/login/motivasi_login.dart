@@ -29,6 +29,23 @@ class _DaftarMotivasiState extends State<DaftarMotivasi> {
     }
   }
 
+  editMotivasi(String id, String isiMotivasi) async {
+    var url = Uri.parse('http://localhost/vigenesia/api/dev/PUTmotivasi');
+    var response =
+        await http.put(url, body: {'id': id, 'isi_motivasi': isiMotivasi});
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+    fetchMotivasi(); // Memperbarui daftar motivasi setelah edit
+  }
+
+  deleteMotivasi(String id) async {
+    var url = Uri.parse('http://localhost/vigenesia/api/dev/DELETEmotivasi');
+    var response = await http.delete(url, body: {'id': id});
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+    fetchMotivasi(); // Memperbarui daftar motivasi setelah delete
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +59,26 @@ class _DaftarMotivasiState extends State<DaftarMotivasi> {
             title: Text(motivasiList[index]['isi_motivasi']),
             subtitle:
                 Text('Tanggal Input: ' + motivasiList[index]['tanggal_input']),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    // Tambahkan fungsi untuk edit motivasi di sini
+                    editMotivasi(motivasiList[index]['id'],
+                        motivasiList[index]['isi_motivasi']);
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    // Tambahkan fungsi untuk delete motivasi di sini
+                    deleteMotivasi(motivasiList[index]['id']);
+                  },
+                ),
+              ],
+            ),
           );
         },
       ),

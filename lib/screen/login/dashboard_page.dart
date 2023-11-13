@@ -74,27 +74,6 @@ class Dashboard extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  title: Text('Hapus Motivasi'),
-                  onTap: () async {
-                    var url = Uri.parse(
-                        'http://localhost/vigenesia/api/dev/DELETEmotivasi');
-                    var response = await http.delete(url);
-                    print('Response status: ${response.statusCode}');
-                    print('Response body: ${response.body}');
-                  },
-                ),
-                ListTile(
-                  title: Text('Edit Motivasi'),
-                  onTap: () async {
-                    var url = Uri.parse(
-                        'http://localhost/vigenesia/api/dev/PUTmotivasi');
-                    var response = await http
-                        .put(url, body: {'key1': 'value1', 'key2': 'value2'});
-                    print('Response status: ${response.statusCode}');
-                    print('Response body: ${response.body}');
-                  },
-                ),
-                ListTile(
                   title: Text('Daftar Motivasi'),
                   onTap: () {
                     Navigator.push(
