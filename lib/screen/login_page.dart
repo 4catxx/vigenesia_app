@@ -8,8 +8,9 @@ import 'register_page.dart';
 import 'menu_page.dart';
 import 'login/dashboard_page.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
-final _formKey = GlobalKey<FormBuilderState>();
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 bool _obscureText = true;
 
 class Login extends StatefulWidget {
@@ -26,7 +27,7 @@ class _LoginState extends State<Login> {
 
   Future<String> loginUser(String email, String password) async {
     setState(() {
-      _isLoading = true; // Tampilkan loading indicator
+      _isLoading = true; // Show loading indicator
     });
 
     final apiUrl = Uri.parse('http://127.0.0.1:80/vigenesia/api/login');
@@ -35,40 +36,51 @@ class _LoginState extends State<Login> {
       final response = await http.post(
         apiUrl,
         body: {'email': email, 'password': password},
-      ).timeout(const Duration(seconds: 10)); // Timeout ke permintaan HTTP
+      ).timeout(const Duration(seconds: 10)); // HTTP request timeout
 
       final responseData = json.decode(response.body);
 
       if (response.statusCode == 200) {
-        return responseData['is_active'] ? "success" : 'Gagal.';
+        if (responseData['is_active'] == true) {
+          print('User login successful.');
+          int idUser = int.parse(responseData['data']['iduser']);
+          await simpanIdUser(idUser); // Save iduser to SharedPreferences
+          return "success";
+        } else {
+          print('User login failed.');
+          return 'Failed.';
+        }
       } else if (response.statusCode == 400) {
         if (responseData == "Ada kesalahan di email / password.") {
-          return 'Login gagal. Email atau password salah.';
+          return 'Login failed. Email or password is incorrect.';
         } else if (responseData == "Belum mengisi email dan password.") {
-          return 'Email dan password harus diisi.';
+          return 'Email and password must be filled.';
         } else {
-          return 'Terjadi kesalahan.';
+          return 'An error occurred.';
         }
       } else {
-        return 'Terjadi kesalahan saat menghubungi server.';
+        return 'An error occurred while contacting the server.';
       }
     } on TimeoutException catch (e) {
-      return 'Terjadi kesalahan saat menghubungi server.';
+      return 'An error occurred while contacting the server.';
     } catch (error) {
-      return 'Terjadi kesalahan saat menghubungi server.';
+      return 'An error occurred while contacting the server.';
     } finally {
       setState(() {
-        _isLoading = false; // Sembunyikan loading indicator
+        _isLoading = false; // Hide loading indicator
       });
     }
+  }
 
-    return 'Terjadi kesalahan.';
+  Future<void> simpanIdUser(int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('id', id);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Warna latar belakang
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -76,51 +88,46 @@ class _LoginState extends State<Login> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('images/4207.png',
-                      height: 200.0), // Gambar dari assets
+                  Image.asset('images/4207.png', height: 200.0),
                   Text(
                     'Selamat Datang!',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black, // Warna teks
+                      color: Colors.black,
                     ),
                   ),
                   Text(
                     'Silakan masuk untuk melanjutkan',
                     style: TextStyle(
                       fontSize: 16,
-                      color: Colors.black, // Warna teks
+                      color: Colors.black,
                     ),
                   ),
                   SizedBox(height: 20),
-                  FormBuilder(
+                  Form(
                     key: _formKey,
                     child: Container(
                       width: MediaQuery.of(context).size.width / 1.3,
                       child: Column(
                         children: [
-                          FormBuilderTextField(
-                            name: "email",
+                          TextFormField(
                             controller: emailController,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.all(16),
                               border: OutlineInputBorder(),
                               labelText: "Email",
                             ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                errorText: 'Email harus diisi',
-                              ),
-                              FormBuilderValidators.email(
-                                errorText: 'Format email tidak valid',
-                              ),
-                            ]),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Email must be filled';
+                              }
+                              return null;
+                            },
                           ),
                           SizedBox(height: 16),
-                          FormBuilderTextField(
+                          TextFormField(
                             obscureText: _obscureText,
-                            name: "password",
                             controller: passwordController,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.all(16),
@@ -139,11 +146,12 @@ class _LoginState extends State<Login> {
                                 },
                               ),
                             ),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(
-                                errorText: 'Password harus diisi',
-                              ),
-                            ]),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Password must be filled';
+                              }
+                              return null;
+                            },
                           ),
                           SizedBox(height: 24),
                           Row(
@@ -180,20 +188,20 @@ class _LoginState extends State<Login> {
                               ),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFF2196F3), // Warna tombol
+                                  primary: Color(0xFF2196F3),
                                   textStyle: TextStyle(
                                     color: Colors.white,
                                   ),
                                 ),
                                 onPressed: () async {
-                                  if (_formKey.currentState
-                                          ?.saveAndValidate() ??
+                                  if (_formKey.currentState?.validate() ??
                                       false) {
                                     String response = await loginUser(
-                                        emailController.text,
-                                        passwordController.text);
+                                      emailController.text,
+                                      passwordController.text,
+                                    );
                                     if (response == "success") {
-                                      Navigator.push(
+                                      Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                           builder: (BuildContext context) =>
@@ -229,7 +237,7 @@ class _LoginState extends State<Login> {
           ),
           if (_isLoading)
             Container(
-              color: Colors.black.withOpacity(0.5), // Lapisan hitam transparan
+              color: Colors.black.withOpacity(0.5),
               child: Center(
                 child: CircularProgressIndicator(),
               ),
