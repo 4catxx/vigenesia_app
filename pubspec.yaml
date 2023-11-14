@@ -39,11 +39,8 @@ dependencies:
   form_builder_validators: ^8.6.1
   another_flushbar: ^1.12.30
   http: ^0.13.6
-<<<<<<< HEAD
   provider: ^6.0.5
   shared_preferences: ^2.2.2
-=======
->>>>>>> 6b73021d3e6ff9f85a2900215a1b9af437c472a5
 
 dev_dependencies:
   flutter_test:
