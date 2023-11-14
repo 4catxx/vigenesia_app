@@ -3,7 +3,6 @@ import '../login_page.dart';
 import '../motivasi_page.dart';
 import 'package:http/http.dart' as http;
 import 'motivasi_login.dart';
-import 'tambah_motivasi.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -65,11 +64,13 @@ class Dashboard extends StatelessWidget {
               children: <Widget>[
                 ListTile(
                   title: Text('Tambah Motivasi'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => TambahMotivasi()),
-                    );
+                  onTap: () async {
+                    var url = Uri.parse(
+                        'http://localhost/vigenesia/api/dev/POSTmotivasi');
+                    var response = await http
+                        .post(url, body: {'key1': 'value1', 'key2': 'value2'});
+                    print('Response status: ${response.statusCode}');
+                    print('Response body: ${response.body}');
                   },
                 ),
                 ListTile(
