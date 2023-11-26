@@ -27,7 +27,7 @@ class _LoginState extends State<Login> {
 
   Future<String> loginUser(String email, String password) async {
     setState(() {
-      _isLoading = true; // Show loading indicator
+      _isLoading = true; // Menampilkan indikator login
     });
 
     final apiUrl = Uri.parse('http://127.0.0.1:80/vigenesia/api/login');
@@ -44,7 +44,7 @@ class _LoginState extends State<Login> {
         if (responseData['is_active'] == true) {
           print('User login successful.');
           int idUser = int.parse(responseData['data']['iduser']);
-          await simpanIdUser(idUser); // Save iduser to SharedPreferences
+          await simpanIdUser(idUser); // Save iduser ke sharepreferences
           return "success";
         } else {
           print('User login failed.');
@@ -52,22 +52,22 @@ class _LoginState extends State<Login> {
         }
       } else if (response.statusCode == 400) {
         if (responseData == "Ada kesalahan di email / password.") {
-          return 'Login failed. Email or password is incorrect.';
+          return 'Login gagal. Email atau password salah.';
         } else if (responseData == "Belum mengisi email dan password.") {
-          return 'Email and password must be filled.';
+          return 'Email dan password harus diisi.';
         } else {
-          return 'An error occurred.';
+          return 'Terjadi kesalahan.';
         }
       } else {
-        return 'An error occurred while contacting the server.';
+        return 'Terjadi kesalahan saat menghubungi server.';
       }
     } on TimeoutException catch (e) {
-      return 'An error occurred while contacting the server.';
+      return 'Terjadi kesalahan saat menghubungi server.';
     } catch (error) {
-      return 'An error occurred while contacting the server.';
+      return 'Terjadi kesalahan saat menghubungi server.';
     } finally {
       setState(() {
-        _isLoading = false; // Hide loading indicator
+        _isLoading = false; // menyembunyikan indikator login
       });
     }
   }
