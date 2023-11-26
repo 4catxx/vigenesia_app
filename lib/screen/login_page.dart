@@ -30,7 +30,7 @@ class _LoginState extends State<Login> {
       _isLoading = true; // Menampilkan indikator login
     });
 
-    final apiUrl = Uri.parse('http://127.0.0.1:80/vigenesia/api/login');
+    final apiUrl = Uri.parse('http://localhost/vigenesia/api/login');
 
     try {
       final response = await http.post(
@@ -120,7 +120,7 @@ class _LoginState extends State<Login> {
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Email must be filled';
+                                return 'Email wajib diisi';
                               }
                               return null;
                             },
@@ -148,7 +148,7 @@ class _LoginState extends State<Login> {
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Password must be filled';
+                                return 'Password wajib diisi';
                               }
                               return null;
                             },

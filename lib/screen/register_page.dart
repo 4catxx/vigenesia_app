@@ -25,7 +25,7 @@ class _RegisterState extends State<Register> {
 
   Future<String> registerUser(
       String nama, String profesi, String email, String password) async {
-    final apiUrl = Uri.parse('http://127.0.0.1:80/vigenesia/api/registrasi');
+    final apiUrl = Uri.parse('http://localhost/vigenesia/api/registrasi');
     final response = await http.post(
       apiUrl,
       body: {
@@ -47,9 +47,9 @@ class _RegisterState extends State<Register> {
         return 'Gagal mendaftar.';
       }
     } else if (response.statusCode == 400) {
-      if (responseData == "The given email already exists.") {
+      if (responseData == "Email sudah terdaftar.") {
         return 'Email sudah terdaftar.';
-      } else if (responseData == "Provide complete user info to add.") {
+      } else if (responseData == "Masukkan data lengkap untuk menambahkan.") {
         return 'Harap lengkapi informasi pengguna.';
       } else {
         return 'Terjadi kesalahan.';

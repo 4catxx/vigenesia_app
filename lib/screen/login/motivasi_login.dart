@@ -65,15 +65,44 @@ class _DaftarMotivasiState extends State<DaftarMotivasi> {
                 IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
-                    // Tambahkan fungsi untuk edit motivasi di sini
-                    editMotivasi(motivasiList[index]['id'],
-                        motivasiList[index]['isi_motivasi']);
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Edit Motivasi'),
+                          content: TextField(
+                            onChanged: (value) {
+                              setState(() {
+                                motivasiList[index]['isi_motivasi'] = value;
+                              });
+                            },
+                            controller: TextEditingController(
+                                text: motivasiList[index]['isi_motivasi']),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text('Update'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                editMotivasi(motivasiList[index]['id'],
+                                    motivasiList[index]['isi_motivasi']);
+                              },
+                            ),
+                            TextButton(
+                              child: Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                 ),
                 IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: () {
-                    // Tambahkan fungsi untuk delete motivasi di sini
                     deleteMotivasi(motivasiList[index]['id']);
                   },
                 ),
