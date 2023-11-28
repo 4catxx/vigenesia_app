@@ -65,6 +65,7 @@ class _DaftarMotivasiState extends State<DaftarMotivasi> {
                 IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
+                    String tempMotivasi = motivasiList[index]['isi_motivasi'];
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -72,9 +73,7 @@ class _DaftarMotivasiState extends State<DaftarMotivasi> {
                           title: Text('Edit Motivasi'),
                           content: TextField(
                             onChanged: (value) {
-                              setState(() {
-                                motivasiList[index]['isi_motivasi'] = value;
-                              });
+                              tempMotivasi = value;
                             },
                             controller: TextEditingController(
                                 text: motivasiList[index]['isi_motivasi']),
@@ -83,6 +82,10 @@ class _DaftarMotivasiState extends State<DaftarMotivasi> {
                             TextButton(
                               child: Text('Update'),
                               onPressed: () {
+                                setState(() {
+                                  motivasiList[index]['isi_motivasi'] =
+                                      tempMotivasi;
+                                });
                                 Navigator.of(context).pop();
                                 editMotivasi(motivasiList[index]['id'],
                                     motivasiList[index]['isi_motivasi']);
