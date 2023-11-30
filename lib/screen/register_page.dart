@@ -4,8 +4,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'login_page.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter/gestures.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
 class Register extends StatefulWidget {
@@ -22,6 +20,7 @@ class _RegisterState extends State<Register> {
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormBuilderState>();
   bool _obscureText = true;
+  bool _isLoading = false; // Tambahkan variabel ini
 
   Future<String> registerUser(
       String nama, String profesi, String email, String password) async {
@@ -64,7 +63,7 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
-        color: Colors.white, // Warna latar belakang hijau
+        color: Colors.white,
         child: SingleChildScrollView(
           child: SafeArea(
             child: Center(
@@ -93,8 +92,7 @@ class _RegisterState extends State<Register> {
                               contentPadding: EdgeInsets.all(16),
                               border: OutlineInputBorder(),
                               labelText: "Nama",
-                              fillColor:
-                                  Colors.white, // Warna latar belakang putih
+                              fillColor: Colors.white,
                             ),
                           ),
                           SizedBox(height: 20),
@@ -105,8 +103,7 @@ class _RegisterState extends State<Register> {
                               contentPadding: EdgeInsets.all(16),
                               border: OutlineInputBorder(),
                               labelText: "Profesi",
-                              fillColor:
-                                  Colors.white, // Warna latar belakang putih
+                              fillColor: Colors.white,
                             ),
                           ),
                           SizedBox(height: 20),
@@ -117,8 +114,7 @@ class _RegisterState extends State<Register> {
                               contentPadding: EdgeInsets.all(16),
                               border: OutlineInputBorder(),
                               labelText: "Email",
-                              fillColor:
-                                  Colors.white, // Warna latar belakang putih
+                              fillColor: Colors.white,
                             ),
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(),
@@ -146,8 +142,7 @@ class _RegisterState extends State<Register> {
                                   });
                                 },
                               ),
-                              fillColor:
-                                  Colors.white, // Warna latar belakang putih
+                              fillColor: Colors.white,
                             ),
                           ),
                           SizedBox(height: 24),
@@ -183,43 +178,64 @@ class _RegisterState extends State<Register> {
                                   ],
                                 ),
                               ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFF2196F3),
-                                  textStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  if (_formKey.currentState
-                                          ?.saveAndValidate() ??
-                                      false) {
-                                    String response = await registerUser(
-                                      namaController.text,
-                                      profesiController.text,
-                                      emailController.text,
-                                      passwordController.text,
-                                    );
+                              _isLoading
+                                  ? CircularProgressIndicator()
+                                  : ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Color(0xFF2196F3),
+                                        textStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        if (_formKey.currentState
+                                                ?.saveAndValidate() ??
+                                            false) {
+                                          setState(() {
+                                            _isLoading = true;
+                                          });
 
-                                    if (response == "success") {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Login(),
-                                        ),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(response),
-                                        ),
-                                      );
-                                    }
-                                  }
-                                },
-                                child: Text("Daftar"),
-                              ),
+                                          String response = await registerUser(
+                                            namaController.text,
+                                            profesiController.text,
+                                            emailController.text,
+                                            passwordController.text,
+                                          );
+
+                                          setState(() {
+                                            _isLoading = false;
+                                          });
+
+                                          if (response == "success") {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content:
+                                                    Text("Daftar berhasil"),
+                                              ),
+                                            );
+
+                                            Future.delayed(Duration(seconds: 3),
+                                                () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => Login(),
+                                                ),
+                                              );
+                                            });
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                content: Text(response),
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      },
+                                      child: Text("Daftar"),
+                                    ),
                             ],
                           ),
                         ],
