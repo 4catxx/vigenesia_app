@@ -160,7 +160,7 @@ class _RegisterState extends State<Register> {
                                     TextSpan(
                                       text: 'Sudah punya akun? ',
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: Color.fromARGB(255, 0, 0, 0),
                                       ),
                                     ),
                                     TextSpan(
@@ -177,7 +177,7 @@ class _RegisterState extends State<Register> {
                                         },
                                       style: TextStyle(
                                         decoration: TextDecoration.underline,
-                                        color: Colors.white,
+                                        color: Colors.blue,
                                       ),
                                     ),
                                   ],
