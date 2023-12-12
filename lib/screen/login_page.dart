@@ -9,6 +9,7 @@ import 'menu_page.dart';
 import 'login/dashboard_page.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../admin/admin_dashboard.dart';
 
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 bool _obscureText = true;
@@ -29,22 +30,29 @@ class _LoginState extends State<Login> {
     setState(() {
       _isLoading = true; // Menampilkan indikator login
     });
-
     final apiUrl = Uri.parse('http://localhost/vigenesia/api/login');
-
     try {
       final response = await http.post(
         apiUrl,
         body: {'email': email, 'password': password},
       ).timeout(const Duration(seconds: 10)); // HTTP request timeout
-
       final responseData = json.decode(response.body);
-
       if (response.statusCode == 200) {
         if (responseData['is_active'] == true) {
           print('User login successful.');
           int idUser = int.parse(responseData['data']['iduser']);
           await simpanIdUser(idUser); // Save iduser ke sharepreferences
+          if (responseData['data']['role_id'] == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AdminDashboard()),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Dashboard()),
+            );
+          }
           return "success";
         } else {
           print('User login failed.');

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:vigenesia_app/screen/login/tambah_motivasi.dart';
-import '../login_page.dart';
+import '../screen/login_page.dart';
 import 'package:http/http.dart' as http;
-import 'motivasi_login.dart';
-import 'setting_page.dart';
-import 'semua_motivasi.dart';
+import 'admin_motivasi.dart';
+import 'admin_setting.dart';
+import 'admin_profile_edit.dart';
+import 'admin_tambah_motivasi.dart';
 
-class Dashboard extends StatelessWidget {
+class AdminDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +41,7 @@ class Dashboard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Menu Utama',
+                    'Menu Admin',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -56,7 +56,7 @@ class Dashboard extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Dashboard()),
+                  MaterialPageRoute(builder: (context) => AdminDashboard()),
                 );
               },
             ),
@@ -69,16 +69,8 @@ class Dashboard extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => TambahMotivasi()),
-                    );
-                  },
-                ),
-                ListTile(
-                  title: Text('Daftar Motivasi'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => DaftarMotivasi()),
+                      MaterialPageRoute(
+                          builder: (context) => AdminTambahMotivasi()),
                     );
                   },
                 ),
@@ -87,7 +79,7 @@ class Dashboard extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SemuaMotivasi()),
+                      MaterialPageRoute(builder: (context) => AdminMotivasi()),
                     );
                   },
                 ),
@@ -99,7 +91,7 @@ class Dashboard extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Setting_profile()),
+                  MaterialPageRoute(builder: (context) => Admin_Setting()),
                 );
               },
             ),

@@ -3,12 +3,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class DaftarMotivasi extends StatefulWidget {
+class AdminMotivasi extends StatefulWidget {
   @override
-  _DaftarMotivasiState createState() => _DaftarMotivasiState();
+  _AdminMotivasiState createState() => _AdminMotivasiState();
 }
 
-class _DaftarMotivasiState extends State<DaftarMotivasi> {
+class _AdminMotivasiState extends State<AdminMotivasi> {
   List motivasiList = [];
 
   @override
@@ -23,7 +23,7 @@ class _DaftarMotivasiState extends State<DaftarMotivasi> {
 
     if (id != null) {
       var response = await http.get(
-        Uri.parse('http://localhost/vigenesia/api/Motivasi?iduser=$id'),
+        Uri.parse('http://localhost/vigenesia/api/Motivasi'),
       );
 
       if (response.statusCode == 200) {

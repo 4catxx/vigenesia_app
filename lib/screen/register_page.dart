@@ -171,71 +171,39 @@ class _RegisterState extends State<Register> {
                                           );
                                         },
                                       style: TextStyle(
-                                        decoration: TextDecoration.underline,
                                         color: Colors.blue,
+                                        decoration: TextDecoration.underline,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              _isLoading
-                                  ? CircularProgressIndicator()
-                                  : ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Color(0xFF2196F3),
-                                        textStyle: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      onPressed: () async {
-                                        if (_formKey.currentState
-                                                ?.saveAndValidate() ??
-                                            false) {
-                                          setState(() {
-                                            _isLoading = true;
-                                          });
-
-                                          String response = await registerUser(
-                                            namaController.text,
-                                            profesiController.text,
-                                            emailController.text,
-                                            passwordController.text,
-                                          );
-
-                                          setState(() {
-                                            _isLoading = false;
-                                          });
-
-                                          if (response == "success") {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content:
-                                                    Text("Daftar berhasil"),
-                                              ),
-                                            );
-
-                                            Future.delayed(Duration(seconds: 3),
-                                                () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => Login(),
-                                                ),
-                                              );
-                                            });
-                                          } else {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content: Text(response),
-                                              ),
-                                            );
-                                          }
-                                        }
-                                      },
-                                      child: Text("Daftar"),
-                                    ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                    String result = await registerUser(
+                                      namaController.text,
+                                      profesiController.text,
+                                      emailController.text,
+                                      passwordController.text,
+                                    );
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(result)),
+                                    );
+                                  }
+                                },
+                                child: _isLoading
+                                    ? CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
+                                    : Text('Daftar'),
+                              ),
                             ],
                           ),
                         ],

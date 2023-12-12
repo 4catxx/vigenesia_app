@@ -1,30 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:vigenesia_app/screen/login/tambah_motivasi.dart';
-import '../login_page.dart';
+import '../screen/login_page.dart';
+//import '../motivasi_page.dart';
 import 'package:http/http.dart' as http;
-import 'motivasi_login.dart';
-import 'setting_page.dart';
-import 'semua_motivasi.dart';
+import 'admin_motivasi.dart';
+import 'admin_dashboard.dart';
+//import 'profile_view.dart';
+import 'admin_profile_edit.dart';
+import 'admin_motivasi.dart';
+import 'admin_profile_view.dart';
 
-class Dashboard extends StatelessWidget {
+class Admin_Setting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Menu'),
+        backgroundColor: Colors.blue,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.asset('images/4207.png', height: 200.0),
+            SizedBox(height: 20),
+            GestureDetector(
+              child: Text(
+                'View Profile',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AdminViewProfile()),
+                );
+              },
+            ),
+            SizedBox(height: 20),
+            GestureDetector(
+              child: Text(
+                'Edit Profile',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EditProfile()),
+                );
+              },
+            ),
             SizedBox(height: 20),
             Text(
-              'Selamat Datang!',
+              'Delete Profile',
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Colors.blue,
               ),
             ),
           ],
@@ -56,7 +94,7 @@ class Dashboard extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Dashboard()),
+                  MaterialPageRoute(builder: (context) => AdminDashboard()),
                 );
               },
             ),
@@ -78,7 +116,7 @@ class Dashboard extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => DaftarMotivasi()),
+                      MaterialPageRoute(builder: (context) => AdminMotivasi()),
                     );
                   },
                 ),
@@ -87,7 +125,7 @@ class Dashboard extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SemuaMotivasi()),
+                      MaterialPageRoute(builder: (context) => AdminMotivasi()),
                     );
                   },
                 ),
@@ -99,7 +137,7 @@ class Dashboard extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Setting_profile()),
+                  MaterialPageRoute(builder: (context) => Admin_Setting()),
                 );
               },
             ),
