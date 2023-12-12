@@ -55,15 +55,6 @@ class Setting_profile extends StatelessWidget {
                 );
               },
             ),
-            SizedBox(height: 20),
-            Text(
-              'Delete Profile',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-              ),
-            ),
           ],
         ),
       ),

@@ -75,7 +75,7 @@ class _AdminViewProfileState extends State<AdminViewProfile> {
                           'Role: ' +
                               ((profileData[index]['role_id'] == '2')
                                   ? 'Member'
-                                  : 'Non-Member'),
+                                  : 'Admin'),
                           style: TextStyle(fontSize: 18),
                         ),
                         SizedBox(height: 10),
