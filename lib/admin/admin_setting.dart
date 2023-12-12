@@ -8,6 +8,7 @@ import 'admin_dashboard.dart';
 //import 'profile_view.dart';
 import 'admin_profile_edit.dart';
 import 'admin_motivasi.dart';
+import 'user_member.dart';
 import 'admin_profile_view.dart';
 
 class Admin_Setting extends StatelessWidget {
@@ -121,6 +122,16 @@ class Admin_Setting extends StatelessWidget {
                   },
                 ),
               ],
+            ),
+            ListTile(
+              leading: Icon(Icons.people),
+              title: Text('Member'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MemberListPage()),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.settings),
