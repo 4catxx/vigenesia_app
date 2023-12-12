@@ -16,7 +16,6 @@ bool _obscureText = true;
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
-
   @override
   State<Login> createState() => _LoginState();
 }
@@ -42,13 +41,13 @@ class _LoginState extends State<Login> {
           print('User login successful.');
           int idUser = int.parse(responseData['data']['iduser']);
           await simpanIdUser(idUser); // Save iduser ke sharepreferences
-          if (responseData['data']['role_id'] == 1) {
-            Navigator.push(
+          if (responseData['data']['role_id'] == "1") {
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => AdminDashboard()),
             );
           } else {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => Dashboard()),
             );
@@ -208,15 +207,7 @@ class _LoginState extends State<Login> {
                                       emailController.text,
                                       passwordController.text,
                                     );
-                                    if (response == "success") {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              Dashboard(),
-                                        ),
-                                      );
-                                    } else {
+                                    if (response != "success") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
