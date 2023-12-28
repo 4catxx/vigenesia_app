@@ -3,7 +3,6 @@ import 'package:vigenesia_app/screen/login/tambah_motivasi.dart';
 import '../login_page.dart';
 import 'package:http/http.dart' as http;
 import 'motivasi_login.dart';
-import 'setting_page.dart';
 import 'semua_motivasi.dart';
 
 class Dashboard extends StatelessWidget {
@@ -92,16 +91,6 @@ class Dashboard extends StatelessWidget {
                   },
                 ),
               ],
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Setting'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Setting_profile()),
-                );
-              },
             ),
             ListTile(
               leading: Icon(Icons.logout),

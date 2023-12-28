@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import '../screen/login_page.dart';
 import 'package:http/http.dart' as http;
 import 'admin_motivasi.dart';
-import 'admin_setting.dart';
-import 'admin_profile_edit.dart';
 import 'admin_tambah_motivasi.dart';
-import 'user_member.dart';
 
 class AdminDashboard extends StatelessWidget {
   @override
@@ -85,26 +82,6 @@ class AdminDashboard extends StatelessWidget {
                   },
                 ),
               ],
-            ),
-            ListTile(
-              leading: Icon(Icons.people),
-              title: Text('Member'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MemberListPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Setting'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Admin_Setting()),
-                );
-              },
             ),
             ListTile(
               leading: Icon(Icons.logout),

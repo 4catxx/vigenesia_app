@@ -21,7 +21,7 @@ class _HalamanMotivasiState extends State<HalamanMotivasi> {
 
   fetchMotivasi() async {
     final response =
-        await http.get(Uri.parse('http://localhost/vigenesia/api/Motivasi'));
+        await http.get(Uri.parse('https://www.vigenesia.org/api/Get_motivasi'));
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
       if (jsonResponse is List && jsonResponse.isNotEmpty) {

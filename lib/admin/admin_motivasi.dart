@@ -23,7 +23,7 @@ class _AdminMotivasiState extends State<AdminMotivasi> {
 
     if (id != null) {
       var response = await http.get(
-        Uri.parse('http://localhost/vigenesia/api/Motivasi'),
+        Uri.parse('https://www.vigenesia.org/api/Get_motivasi'),
       );
 
       if (response.statusCode == 200) {
@@ -38,7 +38,7 @@ class _AdminMotivasiState extends State<AdminMotivasi> {
   }
 
   editMotivasi(String id, String isiMotivasi) async {
-    var url = Uri.parse('http://localhost/vigenesia/api/dev/PUTmotivasi');
+    var url = Uri.parse('https://www.vigenesia.org/api/dev/PUTmotivasi');
     var response =
         await http.put(url, body: {'id': id, 'isi_motivasi': isiMotivasi});
     print('Response status: ${response.statusCode}');
@@ -47,7 +47,7 @@ class _AdminMotivasiState extends State<AdminMotivasi> {
   }
 
   deleteMotivasi(String id) async {
-    var url = Uri.parse('http://localhost/vigenesia/api/dev/DELETEmotivasi');
+    var url = Uri.parse('https://www.vigenesia.org/api/dev/DELETEmotivasi');
     var response = await http.delete(url, body: {'id': id});
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');

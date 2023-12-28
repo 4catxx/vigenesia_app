@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../login_page.dart';
-import 'setting_page.dart';
 import 'dashboard_page.dart';
 import 'motivasi_login.dart';
 import 'tambah_motivasi.dart';
@@ -23,7 +22,7 @@ class _SemuaMotivasiState extends State<SemuaMotivasi> {
 
   fetchMotivasi() async {
     final response =
-        await http.get(Uri.parse('http://localhost/vigenesia/api/Motivasi'));
+        await http.get(Uri.parse('https://www.vigenesia.org/api/Get_motivasi'));
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
       if (jsonResponse is List && jsonResponse.isNotEmpty) {
@@ -115,16 +114,6 @@ class _SemuaMotivasiState extends State<SemuaMotivasi> {
                   },
                 ),
               ],
-            ),
-            ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Setting'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Setting_profile()),
-                );
-              },
             ),
             ListTile(
               leading: Icon(Icons.logout),

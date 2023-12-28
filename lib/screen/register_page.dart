@@ -24,7 +24,7 @@ class _RegisterState extends State<Register> {
 
   Future<String> registerUser(
       String nama, String profesi, String email, String password) async {
-    final apiUrl = Uri.parse('http://localhost/vigenesia/api/registrasi');
+    final apiUrl = Uri.parse('https://www.vigenesia.org/api/registrasi');
     final response = await http.post(
       apiUrl,
       body: {

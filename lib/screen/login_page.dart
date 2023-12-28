@@ -12,72 +12,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../admin/admin_dashboard.dart';
 
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-bool _obscureText = true;
+final ValueNotifier<bool> _obscureText = ValueNotifier(true);
 
-class Login extends StatefulWidget {
+class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
-  @override
-  State<Login> createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  bool _isLoading = false;
-
-  Future<String> loginUser(String email, String password) async {
-    setState(() {
-      _isLoading = true; // Menampilkan indikator login
-    });
-    final apiUrl = Uri.parse('http://localhost/vigenesia/api/login');
-    try {
-      final response = await http.post(
-        apiUrl,
-        body: {'email': email, 'password': password},
-      ).timeout(const Duration(seconds: 10)); // HTTP request timeout
-      final responseData = json.decode(response.body);
-      if (response.statusCode == 200) {
-        if (responseData['is_active'] == true) {
-          print('User login successful.');
-          int idUser = int.parse(responseData['data']['iduser']);
-          await simpanIdUser(idUser); // Save iduser ke sharepreferences
-          if (responseData['data']['role_id'] == "1") {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => AdminDashboard()),
-            );
-          } else {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => Dashboard()),
-            );
-          }
-          return "success";
-        } else {
-          print('User login failed.');
-          return 'Failed.';
-        }
-      } else if (response.statusCode == 400) {
-        if (responseData == "Ada kesalahan di email / password.") {
-          return 'Login gagal. Email atau password salah.';
-        } else if (responseData == "Belum mengisi email dan password.") {
-          return 'Email dan password harus diisi.';
-        } else {
-          return 'Terjadi kesalahan.';
-        }
-      } else {
-        return 'Terjadi kesalahan saat menghubungi server.';
-      }
-    } on TimeoutException catch (e) {
-      return 'Terjadi kesalahan saat menghubungi server.';
-    } catch (error) {
-      return 'Terjadi kesalahan saat menghubungi server.';
-    } finally {
-      setState(() {
-        _isLoading = false; // menyembunyikan indikator login
-      });
-    }
-  }
 
   Future<void> simpanIdUser(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -86,6 +24,68 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+    final ValueNotifier<bool> _isLoading = ValueNotifier(false);
+
+    Future<String> loginUser(String email, String password) async {
+      _isLoading.value = true; // Menampilkan indikator login
+      final apiUrl = Uri.parse('https://www.vigenesia.org/api/login');
+
+      try {
+        print('Sending login request to server'); // Logging tambahan
+        final response = await http.post(
+          apiUrl,
+          body: {'email': email, 'password': password},
+        ).timeout(const Duration(seconds: 30)); // HTTP request timeout
+
+        print('Received response from server: $response'); // Logging tambahan
+
+        final responseData = json.decode(response.body);
+
+        if (response.statusCode == 200) {
+          if (responseData['is_active'] == true) {
+            print('User login successful.');
+            int idUser = int.parse(responseData['data']['iduser']);
+            await simpanIdUser(idUser); // Save iduser ke sharepreferences
+            if (responseData['data']['role_id'] == "1") {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => AdminDashboard()),
+              );
+            } else {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Dashboard()),
+              );
+            }
+            return "Success";
+          } else {
+            print('User login failed.');
+            return 'Failed.';
+          }
+        } else if (response.statusCode == 400) {
+          if (responseData == "Ada kesalahan di email / password.") {
+            return 'Login gagal. Email atau password salah.';
+          } else if (responseData == "Belum mengisi email dan password.") {
+            return 'Email dan password harus diisi.';
+          } else {
+            return 'Terjadi kesalahan.';
+          }
+        } else {
+          return 'Terjadi kesalahan saat menghubungi server. Status Code: ${response.statusCode}';
+        }
+      } on TimeoutException catch (e) {
+        print('Timeout ke server: $e'); // Logging tambahan
+        return 'Timeout ke server.';
+      } catch (error) {
+        print('Error: $error'); // Logging tambahan
+        return 'Terjadi kesalahan: $error';
+      } finally {
+        _isLoading.value = false; // Menyembunyikan indikator login
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -111,7 +111,7 @@ class _LoginState extends State<Login> {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Form(
                     key: _formKey,
                     child: Container(
@@ -132,9 +132,9 @@ class _LoginState extends State<Login> {
                               return null;
                             },
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           TextFormField(
-                            obscureText: _obscureText,
+                            obscureText: _obscureText.value,
                             controller: passwordController,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.all(16),
@@ -142,14 +142,12 @@ class _LoginState extends State<Login> {
                               labelText: "Password",
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  _obscureText
+                                  _obscureText.value
                                       ? Icons.visibility
                                       : Icons.visibility_off,
                                 ),
                                 onPressed: () {
-                                  setState(() {
-                                    _obscureText = !_obscureText;
-                                  });
+                                  _obscureText.value = !_obscureText.value;
                                 },
                               ),
                             ),
@@ -160,7 +158,7 @@ class _LoginState extends State<Login> {
                               return null;
                             },
                           ),
-                          SizedBox(height: 24),
+                          const SizedBox(height: 24),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -234,13 +232,21 @@ class _LoginState extends State<Login> {
               ),
             ),
           ),
-          if (_isLoading)
-            Container(
-              color: Colors.black.withOpacity(0.5),
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
+          ValueListenableBuilder<bool>(
+            valueListenable: _isLoading,
+            builder: (context, isLoading, _) {
+              if (isLoading) {
+                return Container(
+                  color: Colors.black.withOpacity(0.5),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              } else {
+                return SizedBox.shrink();
+              }
+            },
+          ),
         ],
       ),
     );

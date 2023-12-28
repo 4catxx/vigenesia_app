@@ -23,7 +23,7 @@ class _DaftarMotivasiState extends State<DaftarMotivasi> {
 
     if (id != null) {
       var response = await http.get(
-        Uri.parse('http://localhost/vigenesia/api/Motivasi?iduser=$id'),
+        Uri.parse('https://www.vigenesia.org/api/Get_motivasi?iduser=$id'),
       );
 
       if (response.statusCode == 200) {
@@ -38,7 +38,7 @@ class _DaftarMotivasiState extends State<DaftarMotivasi> {
   }
 
   editMotivasi(String id, String isiMotivasi) async {
-    var url = Uri.parse('http://localhost/vigenesia/api/dev/PUTmotivasi');
+    var url = Uri.parse('https://www.vigenesia.org/api/dev/PUTmotivasi');
     var response =
         await http.put(url, body: {'id': id, 'isi_motivasi': isiMotivasi});
     print('Response status: ${response.statusCode}');
