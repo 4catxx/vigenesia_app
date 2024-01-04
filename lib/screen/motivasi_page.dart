@@ -11,23 +11,50 @@ class HalamanMotivasi extends StatefulWidget {
 }
 
 class _HalamanMotivasiState extends State<HalamanMotivasi> {
-  List<String> motivasiList = ['Loading...'];
+  List<Map<String, dynamic>> motivasiList = [];
+  Map<String, dynamic> userMap = {};
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    fetchUsers();
     fetchMotivasi();
+  }
+
+  fetchUsers() async {
+    final response = await http.get(Uri.parse('https://vigenesia.pw/api/user'));
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+      if (jsonResponse is List && jsonResponse.isNotEmpty) {
+        for (var item in jsonResponse) {
+          userMap[item['iduser'].toString()] = item['nama'];
+        }
+      } else {
+        throw Exception('Failed to load users');
+      }
+    } else {
+      throw Exception('Failed to load users');
+    }
   }
 
   fetchMotivasi() async {
     final response =
-        await http.get(Uri.parse('https://www.vigenesia.org/api/Get_motivasi'));
+        await http.get(Uri.parse('https://vigenesia.pw/api/Motivasi'));
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
       if (jsonResponse is List && jsonResponse.isNotEmpty) {
+        for (var item in jsonResponse) {
+          String namaPembuat = userMap[item['iduser'].toString()] ?? 'Unknown';
+          setState(() {
+            motivasiList.add({
+              'isi_motivasi': item['isi_motivasi'],
+              'dibuat_oleh': namaPembuat
+            });
+          });
+        }
         setState(() {
-          motivasiList =
-              jsonResponse.map<String>((item) => item['isi_motivasi']).toList();
+          isLoading = false;
         });
       } else {
         throw Exception('Failed to load motivasi');
@@ -43,14 +70,19 @@ class _HalamanMotivasiState extends State<HalamanMotivasi> {
       appBar: AppBar(
         title: Text('Menu'),
       ),
-      body: ListView.builder(
-        itemCount: motivasiList.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(motivasiList[index]),
-          );
-        },
-      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : ListView.separated(
+              itemCount: motivasiList.length,
+              separatorBuilder: (context, index) => Divider(color: Colors.grey),
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(motivasiList[index]['isi_motivasi']),
+                  subtitle: Text(
+                      'Dibuat oleh: ' + motivasiList[index]['dibuat_oleh']),
+                );
+              },
+            ),
       drawer: Drawer(
         child: ListView(
           children: <Widget>[

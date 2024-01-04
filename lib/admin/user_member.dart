@@ -19,7 +19,7 @@ class _MemberListPageState extends State<MemberListPage> {
   Future<void> fetchMembers() async {
     try {
       var response = await http.get(
-        Uri.parse('http://localhost/vigenesia/api/user'),
+        Uri.parse('https://vigenesia.pw/api/user'),
       );
 
       if (response.statusCode == 200) {
@@ -38,7 +38,7 @@ class _MemberListPageState extends State<MemberListPage> {
   Future<void> editMember(String id, String newName, String newProfession,
       String newRoleId, String newIsActive) async {
     try {
-      var url = Uri.parse('http://localhost/vigenesia/api/PUTprofile');
+      var url = Uri.parse('https://vigenesia.pw/api/PUTprofile');
 
       var response = await http.put(
         url,

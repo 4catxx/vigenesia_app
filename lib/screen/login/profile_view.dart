@@ -21,8 +21,8 @@ class _ViewProfileState extends State<ViewProfile> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? id = prefs.getInt('id');
     if (id != null) {
-      var response = await http
-          .get(Uri.parse('http://localhost/vigenesia/api/user?iduser=$id'));
+      var response =
+          await http.get(Uri.parse('https://vigenesia.pw/api/user?iduser=$id'));
 
       if (response.statusCode == 200) {
         setState(() {

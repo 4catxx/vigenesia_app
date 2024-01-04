@@ -3,6 +3,8 @@ import '../screen/login_page.dart';
 import 'package:http/http.dart' as http;
 import 'admin_motivasi.dart';
 import 'admin_tambah_motivasi.dart';
+import 'user_member.dart'; // Pastikan untuk mengimpor file ini
+import 'admin_setting.dart'; // Pastikan untuk mengimpor file ini
 
 class AdminDashboard extends StatelessWidget {
   @override
@@ -82,6 +84,26 @@ class AdminDashboard extends StatelessWidget {
                   },
                 ),
               ],
+            ),
+            ListTile(
+              leading: Icon(Icons.people),
+              title: Text('Member'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MemberListPage()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Setting'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Admin_Setting()),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.logout),

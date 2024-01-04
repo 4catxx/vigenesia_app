@@ -28,7 +28,7 @@ class _EditProfileState extends State<EditProfile> {
 
     if (id != null) {
       var response = await http.get(
-        Uri.parse('http://localhost/vigenesia/api/user?iduser=$id'),
+        Uri.parse('https://vigenesia.pw/api/user?iduser=$id'),
       );
 
       if (response.statusCode == 200) {

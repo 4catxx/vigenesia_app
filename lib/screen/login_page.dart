@@ -30,7 +30,7 @@ class Login extends StatelessWidget {
 
     Future<String> loginUser(String email, String password) async {
       _isLoading.value = true; // Menampilkan indikator login
-      final apiUrl = Uri.parse('https://www.vigenesia.org/api/login');
+      final apiUrl = Uri.parse('https://vigenesia.pw/api/login');
 
       try {
         print('Sending login request to server'); // Logging tambahan
@@ -205,7 +205,7 @@ class Login extends StatelessWidget {
                                       emailController.text,
                                       passwordController.text,
                                     );
-                                    if (response != "success") {
+                                    if (response != "Login Berhasil") {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(

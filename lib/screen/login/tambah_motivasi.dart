@@ -31,7 +31,7 @@ class _TambahMotivasiState extends State<TambahMotivasi> {
       );
       return;
     }
-    var url = Uri.parse('https://www.vigenesia.org/api/dev/POSTmotivasi');
+    var url = Uri.parse('https://vigenesia.pw/api/dev/POSTmotivasi');
     var response = await http.post(url, body: {
       'isi_motivasi': _isiMotivasiController.text,
       'iduser': idUser.toString(),

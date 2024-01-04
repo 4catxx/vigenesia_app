@@ -22,7 +22,7 @@ class _SemuaMotivasiState extends State<SemuaMotivasi> {
 
   fetchMotivasi() async {
     final response =
-        await http.get(Uri.parse('https://www.vigenesia.org/api/Get_motivasi'));
+        await http.get(Uri.parse('https://vigenesia.pw/api/Motivasi'));
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
       if (jsonResponse is List && jsonResponse.isNotEmpty) {

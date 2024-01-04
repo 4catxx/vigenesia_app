@@ -2,7 +2,7 @@
     package="com.example.vigenesia_app">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="vigenesia_app"
+        android:label="Motivasi Kita"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"> <!-- Letakkan di sini -->
